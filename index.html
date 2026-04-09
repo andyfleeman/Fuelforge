@@ -3,7 +3,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0e0e0e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fuel & Forge">
 <title>Fuel & Forge — Your 12-Week Cut</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -18,7 +22,11 @@
     --border: #2e2c28;
   }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
+- { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html {
+background: #0e0e0e;
+}
 
 body {
 background: var(–black);
@@ -26,6 +34,8 @@ color: var(–white);
 font-family: ‘DM Sans’, sans-serif;
 font-weight: 300;
 line-height: 1.6;
+-webkit-font-smoothing: antialiased;
+padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* HERO */
