@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fuel & Forge — Your 12-Week Cut</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0e0e0e;
+    --white: #f5f2eb;
+    --cream: #ede9df;
+    --accent: #d4521a;
+    --accent2: #2a6b4f;
+    --muted: #7a7468;
+    --card: #1a1916;
+    --border: #2e2c28;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–black);
+color: var(–white);
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 300;
+line-height: 1.6;
+}
+
+/* HERO */
+.hero {
+padding: 64px 24px 48px;
+border-bottom: 1px solid var(–border);
+position: relative;
+overflow: hidden;
+}
+.hero::before {
+content: ‘’;
+position: absolute;
+top: -60px; right: -60px;
+width: 320px; height: 320px;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(212,82,26,0.15) 0%, transparent 70%);
+pointer-events: none;
+}
+.hero-label {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 12px;
+}
+.hero h1 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(52px, 12vw, 96px);
+line-height: 0.92;
+letter-spacing: 0.02em;
+color: var(–white);
+}
+.hero h1 span { color: var(–accent); }
+.hero-sub {
+margin-top: 20px;
+font-size: 15px;
+color: var(–muted);
+max-width: 480px;
+}
+.stats-row {
+display: flex;
+gap: 32px;
+margin-top: 36px;
+flex-wrap: wrap;
+}
+.stat { display: flex; flex-direction: column; gap: 4px; }
+.stat-val {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 32px;
+color: var(–accent);
+line-height: 1;
+}
+.stat-label {
+font-size: 11px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–muted);
+}
+
+/* NAV TABS */
+.tabs {
+display: flex;
+border-bottom: 1px solid var(–border);
+position: sticky;
+top: 0;
+background: var(–black);
+z-index: 100;
+overflow-x: auto;
+}
+.tab {
+flex: 1;
+min-width: 80px;
+padding: 18px 10px;
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+text-align: center;
+cursor: pointer;
+color: var(–muted);
+border: none;
+background: none;
+border-bottom: 2px solid transparent;
+transition: all 0.2s;
+white-space: nowrap;
+}
+.tab.active { color: var(–white); border-bottom-color: var(–accent); }
+
+/* SECTIONS */
+.section { display: none; padding: 0 0 80px; }
+.section.active { display: block; }
+
+.section-header {
+padding: 40px 24px 24px;
+border-bottom: 1px solid var(–border);
+}
+.section-header h2 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 36px;
+letter-spacing: 0.04em;
+}
+.section-header p { font-size: 14px; color: var(–muted); margin-top: 6px; }
+
+/* WEEK GRID */
+.week-block { padding: 32px 24px 0; }
+.week-title {
+font-family: ‘DM Mono’, monospace;
+font-size: 11px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 16px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.week-title::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
+.day-cards { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.day-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 8px;
+overflow: hidden;
+}
+.day-card-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 14px 16px;
+cursor: pointer;
+gap: 12px;
+}
+.day-name { font-family: ‘Bebas Neue’, sans-serif; font-size: 20px; letter-spacing: 0.06em; min-width: 96px; }
+.day-theme { font-size: 13px; color: var(–muted); flex: 1; }
+.day-cal { font-family: ‘DM Mono’, monospace; font-size: 12px; color: var(–accent); white-space: nowrap; }
+.chevron { color: var(–muted); font-size: 10px; transition: transform 0.2s; }
+.day-card.open .chevron { transform: rotate(180deg); }
+.day-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(–border); }
+.day-card.open .day-body { display: block; }
+.meal-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(–border); align-items: flex-start; }
+.meal-row:last-child { border-bottom: none; }
+.meal-type { font-family: ‘DM Mono’, monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(–accent2); min-width: 72px; padding-top: 2px; }
+.meal-detail { flex: 1; }
+.meal-name { font-size: 14px; font-weight: 500; color: var(–white); margin-bottom: 2px; }
+.meal-macros { font-size: 12px; color: var(–muted); }
+
+/* GROCERY */
+.grocery-grid { padding: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grocery-cat { background: var(–card); border: 1px solid var(–border); border-radius: 8px; padding: 16px; }
+.grocery-cat h3 { font-family: ‘Bebas Neue’, sans-serif; font-size: 18px; letter-spacing: 0.06em; color: var(–accent); margin-bottom: 10px; }
+.grocery-cat ul { list-style: none; }
+.grocery-cat li { font-size: 13px; color: var(–muted); padding: 4px 0; border-bottom: 1px solid var(–border); display: flex; align-items: center; gap: 8px; }
+.grocery-cat li:last-child { border-bottom: none; }
+.grocery-cat li::before { content: ‘—’; color: var(–accent2); font-size: 10px; }
+
+/* WORKOUT */
+.workout-grid { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.workout-card { background: var(–card); border: 1px solid var(–border); border-radius: 8px; overflow: hidden; }
+.workout-card-header { display: flex; align-items: center; gap: 16px; padding: 16px; cursor: pointer; }
+.workout-day-badge { font-family: ‘Bebas Neue’, sans-serif; font-size: 28px; color: var(–accent); line-height: 1; min-width: 44px; }
+.workout-info { flex: 1; }
+.workout-title { font-weight: 600; font-size: 15px; }
+.workout-meta { font-size: 12px; color: var(–muted); margin-top: 2px; font-family: ‘DM Mono’, monospace; }
+.workout-badge { font-family: ‘DM Mono’, monospace; font-size: 10px; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.1em; text-transform: uppercase; }
+.badge-lift { background: rgba(212,82,26,0.15); color: var(–accent); }
+.badge-cardio { background: rgba(42,107,79,0.15); color: var(–accent2); }
+.badge-rest { background: rgba(122,116,104,0.1); color: var(–muted); }
+.workout-body { display: none; border-top: 1px solid var(–border); padding: 16px; }
+.workout-card.open .workout-body { display: block; }
+.exercise-list { display: flex; flex-direction: column; gap: 10px; }
+.exercise-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: rgba(255,255,255,0.03); border-radius: 6px; border: 1px solid var(–border); }
+.exercise-num { font-family: ‘Bebas Neue’, sans-serif; font-size: 22px; color: var(–border); min-width: 28px; }
+.exercise-detail { flex: 1; }
+.exercise-name { font-size: 14px; font-weight: 500; }
+.exercise-sets { font-size: 12px; color: var(–muted); margin-top: 2px; font-family: ‘DM Mono’, monospace; }
+.exercise-tip { font-size: 11px; color: var(–accent2); font-style: italic; margin-top: 3px; }
+.cardio-block { padding: 12px; background: rgba(42,107,79,0.07); border: 1px solid rgba(42,107,79,0.2); border-radius: 6px; font-size: 14px; }
+.cardio-block strong { color: var(–accent2); display: block; margin-bottom: 4px; }
+.rest-block { padding: 12px; background: rgba(122,116,104,0.05); border: 1px solid var(–border); border-radius: 6px; font-size: 14px; color: var(–muted); text-align: center; }
+.tip-box { margin: 0 24px; padding: 16px; background: rgba(212,82,26,0.06); border: 1px solid rgba(212,82,26,0.2); border-radius: 8px; font-size: 13px; color: var(–muted); line-height: 1.7; }
+.tip-box strong { color: var(–accent); display: block; margin-bottom: 6px; font-size: 12px; letter-spacing: 0.1em; font-family: ‘DM Mono’, monospace; text-transform: uppercase; }
+
+/* WEIGHT TRACKER */
+.tracker-wrap { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+.tracker-input-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 20px;
+}
+.tracker-input-card h3 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 22px;
+letter-spacing: 0.04em;
+margin-bottom: 16px;
+}
+.input-row {
+display: flex;
+gap: 10px;
+align-items: flex-end;
+flex-wrap: wrap;
+}
+.input-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 120px; }
+.input-group label { font-family: ‘DM Mono’, monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(–muted); }
+.input-group input {
+background: #111;
+border: 1px solid var(–border);
+border-radius: 6px;
+padding: 10px 12px;
+color: var(–white);
+font-family: ‘DM Mono’, monospace;
+font-size: 15px;
+width: 100%;
+outline: none;
+transition: border-color 0.2s;
+}
+.input-group input:focus { border-color: var(–accent); }
+.btn-log {
+background: var(–accent);
+color: var(–white);
+border: none;
+border-radius: 6px;
+padding: 10px 20px;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 18px;
+letter-spacing: 0.06em;
+cursor: pointer;
+transition: opacity 0.2s;
+white-space: nowrap;
+align-self: flex-end;
+}
+.btn-log:hover { opacity: 0.85; }
+
+/* PROGRESS SUMMARY */
+.progress-cards {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+}
+.progress-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 16px;
+text-align: center;
+}
+.progress-val {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 30px;
+color: var(–accent);
+line-height: 1;
+}
+.progress-val.good { color: var(–accent2); }
+.progress-val.neutral { color: var(–white); }
+.progress-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(–muted); margin-top: 6px; font-family: ‘DM Mono’, monospace; }
+
+/* CHART */
+.chart-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 20px;
+}
+.chart-card h3 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 20px;
+letter-spacing: 0.04em;
+margin-bottom: 16px;
+color: var(–white);
+}
+.chart-area {
+width: 100%;
+height: 180px;
+position: relative;
+}
+canvas#weightChart { width: 100% !important; height: 180px !important; }
+
+.empty-chart {
+height: 180px;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(–muted);
+font-size: 13px;
+border: 1px dashed var(–border);
+border-radius: 6px;
+font-family: ‘DM Mono’, monospace;
+}
+
+/* LOG TABLE */
+.log-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 8px;
+overflow: hidden;
+}
+.log-card-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 16px 20px;
+border-bottom: 1px solid var(–border);
+}
+.log-card-header h3 { font-family: ‘Bebas Neue’, sans-serif; font-size: 20px; letter-spacing: 0.04em; }
+.btn-clear {
+background: none;
+border: 1px solid var(–border);
+border-radius: 4px;
+padding: 5px 12px;
+font-family: ‘DM Mono’, monospace;
+font-size: 10px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(–muted);
+cursor: pointer;
+transition: all 0.2s;
+}
+.btn-clear:hover { border-color: var(–accent); color: var(–accent); }
+
+.log-table { width: 100%; border-collapse: collapse; }
+.log-table th {
+font-family: ‘DM Mono’, monospace;
+font-size: 10px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(–muted);
+padding: 10px 20px;
+text-align: left;
+border-bottom: 1px solid var(–border);
+}
+.log-table td { padding: 10px 20px; font-size: 14px; border-bottom: 1px solid var(–border); }
+.log-table tr:last-child td { border-bottom: none; }
+.log-table .change-pos { color: var(–accent); font-family: ‘DM Mono’, monospace; font-size: 12px; }
+.log-table .change-neg { color: var(–accent2); font-family: ‘DM Mono’, monospace; font-size: 12px; }
+.log-table .change-nil { color: var(–muted); font-family: ‘DM Mono’, monospace; font-size: 12px; }
+.delete-btn { background: none; border: none; color: var(–border); cursor: pointer; font-size: 14px; transition: color 0.2s; }
+.delete-btn:hover { color: var(–accent); }
+.log-empty { padding: 28px 20px; text-align: center; color: var(–muted); font-size: 13px; font-family: ‘DM Mono’, monospace; }
+
+.toast {
+position: fixed;
+bottom: 24px;
+left: 50%;
+transform: translateX(-50%) translateY(80px);
+background: var(–accent2);
+color: var(–white);
+padding: 10px 20px;
+border-radius: 6px;
+font-family: ‘DM Mono’, monospace;
+font-size: 12px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+transition: transform 0.3s ease;
+z-index: 999;
+white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+@media (min-width: 600px) {
+.day-cards { grid-template-columns: 1fr 1fr; }
+.hero { padding: 80px 40px 56px; }
+.week-block { padding: 40px 40px 0; }
+.section-header { padding: 48px 40px 28px; }
+.grocery-grid { padding: 32px 40px; grid-template-columns: repeat(3, 1fr); }
+.workout-grid { padding: 32px 40px; }
+.tip-box { margin: 0 40px; }
+.tracker-wrap { padding: 32px 40px; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Your Personal Plan — 12 Week Cut</div>
+  <h1>FUEL &<br><span>FORGE</span></h1>
+  <p class="hero-sub">Simple ingredients. Consistent training. 15 lbs gone in 3 months — without losing your muscle or your mind.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-val">~2,050</div><div class="stat-label">Daily Calories</div></div>
+    <div class="stat"><div class="stat-val">170g</div><div class="stat-label">Protein Target</div></div>
+    <div class="stat"><div class="stat-val">4–5x</div><div class="stat-label">Sessions / Week</div></div>
+    <div class="stat"><div class="stat-val">40min</div><div class="stat-label">Avg Session</div></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('meals', this)">Meal Plan</button>
+  <button class="tab" onclick="showTab('grocery', this)">Grocery</button>
+  <button class="tab" onclick="showTab('workout', this)">Workouts</button>
+  <button class="tab" onclick="showTab('tracker', this)">Weight Log</button>
+</div>
+
+<!-- MEAL PLAN -->
+
+<div id="meals" class="section active">
+  <div class="section-header">
+    <h2>2-Week Meal Plan</h2>
+    <p>Tap any day to expand. Meals rotate so you never eat the same thing 3 days in a row.</p>
+  </div>
+  <div class="week-block">
+    <div class="week-title">Week One</div>
+    <div class="day-cards" id="week1"></div>
+  </div>
+  <div class="week-block" style="padding-top:32px; padding-bottom:32px;">
+    <div class="week-title">Week Two</div>
+    <div class="day-cards" id="week2"></div>
+  </div>
+</div>
+
+<!-- GROCERY -->
+
+<div id="grocery" class="section">
+  <div class="section-header">
+    <h2>Weekly Grocery List</h2>
+    <p>Buy this once a week. Everything is available at a standard supermarket.</p>
+  </div>
+  <div class="grocery-grid">
+    <div class="grocery-cat">
+      <h3>Proteins</h3>
+      <ul>
+        <li>Chicken breast (3 lbs)</li>
+        <li>Lean ground beef (1 lb)</li>
+        <li>Ground turkey (1 lb)</li>
+        <li>Salmon fillets (4)</li>
+        <li>Eggs (18-pack)</li>
+        <li>Greek yogurt, 0% (4 large tubs)</li>
+        <li>Cottage cheese (1 lb tub)</li>
+        <li>Tinned tuna (6 cans)</li>
+      </ul>
+    </div>
+    <div class="grocery-cat">
+      <h3>Carbs</h3>
+      <ul>
+        <li>Basmati or jasmine rice (2 lbs)</li>
+        <li>Rolled oats (2 lbs)</li>
+        <li>Sweet potatoes (2 lbs)</li>
+        <li>Whole wheat bread (1 loaf)</li>
+        <li>Pasta (1 lb)</li>
+        <li>Corn tortillas (pack)</li>
+        <li>Rice cakes (pack)</li>
+      </ul>
+    </div>
+    <div class="grocery-cat">
+      <h3>Veg & Fruit</h3>
+      <ul>
+        <li>Broccoli (2 heads)</li>
+        <li>Baby spinach (large bag)</li>
+        <li>Bell peppers (6)</li>
+        <li>Cherry tomatoes (punnet)</li>
+        <li>Onions (bag)</li>
+        <li>Apples (bag)</li>
+        <li>Blueberries or mixed berries</li>
+        <li>Frozen mixed veg (bag)</li>
+      </ul>
+    </div>
+    <div class="grocery-cat">
+      <h3>Fats & Flavour</h3>
+      <ul>
+        <li>Olive oil</li>
+        <li>Avocados (4–5)</li>
+        <li>Almonds or mixed nuts</li>
+        <li>Peanut butter (natural)</li>
+        <li>Garlic (bulb)</li>
+        <li>Soy sauce (low sodium)</li>
+        <li>Hot sauce</li>
+      </ul>
+    </div>
+    <div class="grocery-cat">
+      <h3>Pantry Staples</h3>
+      <ul>
+        <li>Chicken/beef stock cubes</li>
+        <li>Tinned chopped tomatoes</li>
+        <li>Black beans (tinned)</li>
+        <li>Smoked paprika</li>
+        <li>Cumin</li>
+        <li>Oregano</li>
+        <li>Salt & black pepper</li>
+        <li>Honey (small jar)</li>
+      </ul>
+    </div>
+    <div class="grocery-cat">
+      <h3>Drinks</h3>
+      <ul>
+        <li>Sparkling water (bulk)</li>
+        <li>Black coffee or green tea</li>
+        <li>Protein powder (optional)</li>
+        <li>Skimmed or semi-skimmed milk</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- WORKOUT -->
+
+<div id="workout" class="section">
+  <div class="section-header">
+    <h2>Weekly Workout Template</h2>
+    <p>Repeat this schedule both weeks. Lift days: add weight when 3 sets of 12 feels easy.</p>
+  </div>
+  <div class="workout-grid" id="workoutGrid"></div>
+  <div class="tip-box" style="margin-top:20px;">
+    <strong>Progressive Overload — The One Rule</strong>
+    Every week, try to add a little weight or one extra rep to each lift. This is how you keep muscle while cutting. Don't go heavy enough to ego-lift — go heavy enough that the last 2 reps are genuinely hard.
+  </div>
+</div>
+
+<!-- WEIGHT TRACKER -->
+
+<div id="tracker" class="section">
+  <div class="section-header">
+    <h2>Weekly Weight Log</h2>
+    <p>Weigh yourself Sunday morning, before eating. Log it here. Your data stays on this device.</p>
+  </div>
+
+  <div class="tracker-wrap">
+
+```
+<!-- Input -->
+<div class="tracker-input-card">
+  <h3>Log This Week</h3>
+  <div class="input-row">
+    <div class="input-group">
+      <label>Date</label>
+      <input type="date" id="logDate">
+    </div>
+    <div class="input-group">
+      <label>Weight (lbs)</label>
+      <input type="number" id="logWeight" placeholder="e.g. 200" step="0.1" min="50" max="500">
+    </div>
+    <div class="input-group">
+      <label>Note (optional)</label>
+      <input type="text" id="logNote" placeholder="e.g. felt strong this week">
+    </div>
+    <button class="btn-log" onclick="logWeight()">Log it</button>
+  </div>
+</div>
+
+<!-- Summary cards -->
+<div class="progress-cards" id="summaryCards">
+  <div class="progress-card">
+    <div class="progress-val neutral" id="sumStart">—</div>
+    <div class="progress-label">Start Weight</div>
+  </div>
+  <div class="progress-card">
+    <div class="progress-val neutral" id="sumCurrent">—</div>
+    <div class="progress-label">Current Weight</div>
+  </div>
+  <div class="progress-card">
+    <div class="progress-val neutral" id="sumLost">—</div>
+    <div class="progress-label">Total Lost</div>
+  </div>
+</div>
+
+<!-- Chart -->
+<div class="chart-card">
+  <h3>Progress Chart</h3>
+  <div class="chart-area" id="chartArea">
+    <div class="empty-chart" id="emptyChart">Log at least 2 weeks to see your trend</div>
+    <canvas id="weightChart" style="display:none;"></canvas>
+  </div>
+</div>
+
+<!-- Log table -->
+<div class="log-card">
+  <div class="log-card-header">
+    <h3>Entry History</h3>
+    <button class="btn-clear" onclick="clearAll()">Clear All</button>
+  </div>
+  <div id="logTableWrap">
+    <div class="log-empty">No entries yet. Log your first weigh-in above.</div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+
+const week1 = [
+  {
+    day: 'Monday', theme: 'Chicken & Rice Bowl', cal: '~2,050 kcal',
+    meals: [
+      { type: 'Breakfast', name: 'Oats with apple & peanut butter', macros: '~440 kcal · 18g protein' },
+      { type: 'Lunch', name: 'Chicken & rice bowl with broccoli and soy sauce', macros: '~580 kcal · 48g protein' },
+      { type: 'Snack', name: 'Greek yogurt with a handful of almonds', macros: '~240 kcal · 22g protein' },
+      { type: 'Dinner', name: 'Ground beef & sweet potato mash with frozen veg', macros: '~620 kcal · 45g protein' },
+      { type: 'Evening', name: 'Cottage cheese & rice cakes', macros: '~180 kcal · 20g protein' },
+    ]
+  },
+  {
+    day: 'Tuesday', theme: 'Turkey & Pasta Day', cal: '~2,020 kcal',
+    meals: [
+      { type: 'Breakfast', name: '3 scrambled eggs on whole wheat toast with spinach', macros: '~430 kcal · 32g protein' },
+      { type: 'Lunch', name: 'Turkey & pasta with tinned tomatoes and garlic', macros: '~560 kcal · 42g protein' },
+      { type: 'Snack', name: 'Apple + 2 tbsp peanut butter', macros: '~220 kcal · 8g protein' },
+      { type: 'Dinner', name: 'Salmon fillet with rice and roasted bell peppers', macros: '~620 kcal · 46g protein' },
+      { type: 'Evening', name: 'Greek yogurt with honey', macros: '~190 kcal · 18g protein' },
+    ]
+  },
+  {
+    day: 'Wednesday', theme: 'Tuna & Sweet Potato', cal: '~2,030 kcal',
+    meals: [
+      { type: 'Breakfast', name: 'Oats with Greek yogurt stirred in + berries', macros: '~440 kcal · 28g protein' },
+      { type: 'Lunch', name: 'Tuna, black bean & rice bowl with hot sauce', macros: '~550 kcal · 46g protein' },
+      { type: 'Snack', name: 'Cottage cheese with cherry tomatoes', macros: '~180 kcal · 20g protein' },
+      { type: 'Dinner', name: 'Chicken breast with baked sweet potato and broccoli', macros: '~620 kcal · 50g protein' },
+      { type: 'Evening', name: 'Rice cakes + small handful of almonds', macros: '~200 kcal · 6g protein' },
+    ]
+  },
+  {
+    day: 'Thursday', theme: 'Egg & Chicken Rotation', cal: '~2,060 kcal',
+    meals: [
+      { type: 'Breakfast', name: '4-egg omelette with spinach, onion & bell pepper', macros: '~440 kcal · 34g protein' },
+      { type: 'Lunch', name: 'Chicken tortilla wraps with avocado & tomatoes', macros: '~580 kcal · 44g protein' },
+      { type: 'Snack', name: 'Greek yogurt + apple', macros: '~210 kcal · 16g protein' },
+      { type: 'Dinner', name: 'Ground turkey stir-fry with rice and soy sauce', macros: '~610 kcal · 48g protein' },
+      { type: 'Evening', name: 'Cottage cheese + rice cakes', macros: '~190 kcal · 20g protein' },
+    ]
+  },
+  {
+    day: 'Friday', theme: 'Salmon & Pasta Day', cal: '~2,040 kcal',
+    meals: [
+      { type: 'Breakfast', name: 'Oats with peanut butter, honey & apple chunks', macros: '~450 kcal · 14g protein' },
+      { type: 'Lunch', name: 'Tuna pasta with cherry tomatoes and olive oil', macros: '~560 kcal · 40g protein' },
+      { type: 'Snack', name: '2 boiled eggs + rice cakes', macros: '~220 kcal · 18g protein' },
+      { type: 'Dinner', name: 'Salmon with roasted sweet potato and frozen veg', macros: '~620 kcal · 45g protein' },
+      { type: 'Evening', name: 'Greek yogurt with almonds', macros: '~200 kcal · 20g protein' },
+    ]
+  },
+  {
+    day: 'Saturday', theme: 'Flexible Day', cal: '~2,100 kcal',
+    meals: [
+      { type: 'Breakfast', name: 'Eggs any style + whole wheat toast + avocado', macros: '~500 kcal · 28g protein' },
+      { type: 'Lunch', name: 'Chicken & black bean bowl with rice and salsa', macros: '~580 kcal · 46g protein' },
+      { type: 'Snack', name: 'Apple + peanut butter + rice cakes', macros: '~260 kcal · 9g protein' },
+      { type: 'Dinner', name: 'Beef mince with pasta and tinned tomatoes', macros: '~640 kcal · 44g protein' },
+      { type: 'Evening', name: 'Cottage cheese', macros: '~140 kcal · 18g protein' },
+    ]
+  },
+  {
+    day: 'Sunday', theme: 'Prep & Rest Day', cal: '~1,950 kcal',
+    meals: [
+      { type: 'Breakfast', name: 'Big oat bowl: oats, yogurt, berries, almonds', macros: '~480 kcal · 26g protein' },
+      { type: 'Lunch', name: 'Chicken soup: stock, chicken, veg, rice', macros: '~500 kcal · 40g protein' },
+      { type: 'Snack', name: 'Apple + almonds', macros: '~200 kcal · 6g protein' },
+      { type: 'Dinner', name: 'Salmon with sweet potato mash and broccoli', macros: '~580 kcal · 44g protein' },
+      { type: 'Evening', name: 'Greek yogurt', macros: '~150 kcal · 15g protein' },
+    ]
+  },
+];
+
+const week2 = [
+  {
+    day: 'Monday', theme: 'Turkey Bowl Day', cal: '~2,040 kcal',
+    meals: [
+      { type: 'Breakfast', name: 'Scrambled eggs (3) + oats with berries', macros: '~470 kcal · 34g protein' },
+      { type: 'Lunch', name: 'Ground turkey & black bean rice bowl', macros: '~570 kcal · 46g protein' },
+      { type: 'Snack', name: 'Cottage cheese + rice cakes', macros: '~200 kcal · 20g protein' },
+      { type: 'Dinner', name: 'Chicken breast with pasta and roasted veg', macros: '~600 kcal · 46g protein' },
+      { type: 'Evening', name: 'Greek yogurt + almonds', macros: '~200 kcal · 18g protein' },
+    ]
+  },
+  {
+    day: 'Tuesday', theme: 'Beef & Sweet Potato', cal: '~2,060 kcal',
+    meals: [
+      { type: 'Breakfast', name: 'Oats with Greek yogurt + apple', macros: '~440 kcal · 26g protein' },
+      { type: 'Lunch', name: 'Beef mince & sweet potato with frozen veg', macros: '~600 kcal · 44g protein' },
+      { type: 'Snack', name: 'Apple + 2 tbsp peanut butter', macros: '~220 kcal · 8g protein' },
+      { type: 'Dinner', name: 'Tuna, egg & rice bowl with soy sauce', macros: '~580 kcal · 48g protein' },
+      { type: 'Evening', name: 'Cottage cheese with hot sauce', macros: '~160 kcal · 18g protein' },
+    ]
+  },
+  {
+    day: 'Wednesday', theme: 'Chicken Wrap Day', cal: '~2,020 kcal',
+    meals: [
+      { type: 'Breakfast', name: '4-egg omelette with spinach and bell pepper', macros: '~440 kcal · 34g protein' },
+      { type: 'Lunch', name: 'Chicken & avocado corn tortilla wraps', macros: '~560 kcal · 42g protein' },
+      { type: 'Snack', name: 'Greek yogurt + handful of almonds', macros: '~240 kcal · 22g protein' },
+      { type: 'Dinner', name: 'Salmon with jasmine rice and broccoli', macros: '~620 kcal · 46g protein' },
+      { type: 'Evening', name: 'Rice cakes + peanut butter', macros: '~190 kcal · 8g protein' },
+    ]
+  },
+  {
+    day: 'Thursday', theme: 'Tuna & Pasta Day', cal: '~2,030 kcal',
+    meals: [
+      { type: 'Breakfast', name: 'Oats with peanut butter & apple slices', macros: '~440 kcal · 13g protein' },
+      { type: 'Lunch', name: 'Tuna pasta with olive oil, tomatoes & spinach', macros: '~560 kcal · 42g protein' },
+      { type: 'Snack', name: '2 boiled eggs + apple', macros: '~210 kcal · 16g protein' },
+      { type: 'Dinner', name: 'Ground turkey stir-fry with rice, peppers & soy', macros: '~620 kcal · 48g protein' },
+      { type: 'Evening', name: 'Greek yogurt with honey', macros: '~180 kcal · 16g protein' },
+    ]
+  },
+  {
+    day: 'Friday', theme: 'Chicken & Rice Again', cal: '~2,050 kcal',
+    meals: [
+      { type: 'Breakfast', name: '3 eggs on toast with avocado', macros: '~460 kcal · 28g protein' },
+      { type: 'Lunch', name: 'Chicken, rice & frozen veg bowl with hot sauce', macros: '~570 kcal · 46g protein' },
+      { type: 'Snack', name: 'Cottage cheese + rice cakes', macros: '~200 kcal · 20g protein' },
+      { type: 'Dinner', name: 'Beef mince with sweet potato and broccoli', macros: '~630 kcal · 46g protein' },
+      { type: 'Evening', name: 'Greek yogurt + apple slices', macros: '~190 kcal · 15g protein' },
+    ]
+  },
+  {
+    day: 'Saturday', theme: 'Flexible Day', cal: '~2,100 kcal',
+    meals: [
+      { type: 'Breakfast', name: 'Big egg scramble: 4 eggs, spinach, onion, toast', macros: '~510 kcal · 36g protein' },
+      { type: 'Lunch', name: 'Salmon & avocado rice bowl with cherry tomatoes', macros: '~600 kcal · 44g protein' },
+      { type: 'Snack', name: 'Almonds + apple', macros: '~220 kcal · 6g protein' },
+      { type: 'Dinner', name: 'Chicken tortillas with black beans, salsa & yogurt', macros: '~640 kcal · 48g protein' },
+      { type: 'Evening', name: 'Cottage cheese', macros: '~140 kcal · 18g protein' },
+    ]
+  },
+  {
+    day: 'Sunday', theme: 'Meal Prep Day', cal: '~1,960 kcal',
+    meals: [
+      { type: 'Breakfast', name: 'Oats with yogurt, peanut butter & berries', macros: '~470 kcal · 26g protein' },
+      { type: 'Lunch', name: 'Chicken & veg soup with rice', macros: '~510 kcal · 40g protein' },
+      { type: 'Snack', name: 'Greek yogurt + rice cakes', macros: '~210 kcal · 18g protein' },
+      { type: 'Dinner', name: 'Ground turkey & sweet potato with frozen veg', macros: '~570 kcal · 44g protein' },
+      { type: 'Evening', name: 'Boiled eggs (2)', macros: '~160 kcal · 12g protein' },
+    ]
+  },
+];
+
+const workoutDays = [
+  {
+    day: 'MON', label: 'Push Day', meta: '40 min · Chest, Shoulders, Triceps', type: 'lift',
+    exercises: [
+      { name: 'Barbell Bench Press', sets: '3 sets × 8–10 reps', tip: 'Lower to chest, pause briefly, drive up' },
+      { name: 'Dumbbell Shoulder Press', sets: '3 sets × 10–12 reps', tip: "Don't lock elbows at top" },
+      { name: 'Incline Dumbbell Press', sets: '3 sets × 10–12 reps', tip: '30–45° incline' },
+      { name: 'Cable Tricep Pushdown', sets: '3 sets × 12–15 reps', tip: 'Keep elbows pinned to sides' },
+      { name: 'Plank', sets: '3 × 30–45 sec', tip: 'Squeeze glutes and core together' },
+    ]
+  },
+  {
+    day: 'TUE', label: 'Pull Day', meta: '40 min · Back, Biceps', type: 'lift',
+    exercises: [
+      { name: 'Lat Pulldown', sets: '3 sets × 10–12 reps', tip: 'Pull to upper chest, squeeze at bottom' },
+      { name: 'Seated Cable Row', sets: '3 sets × 10–12 reps', tip: 'Drive elbows back, hold 1 sec' },
+      { name: 'Single-Arm Dumbbell Row', sets: '3 sets × 10 reps each', tip: 'Brace on bench, row to hip' },
+      { name: 'Face Pulls', sets: '3 sets × 15 reps', tip: 'External rotation at end of pull' },
+      { name: 'Dumbbell Curl', sets: '3 sets × 12 reps', tip: 'Slow on the way down' },
+    ]
+  },
+  {
+    day: 'WED', label: 'Zone 2 Cardio', meta: '30 min · Low Intensity', type: 'cardio',
+    cardio: 'Treadmill incline walk (incline 8–12, speed 3–4 mph), stationary bike, or elliptical. You should be able to hold a conversation — not gasping, not strolling. Stay in that zone the full 30 minutes. This burns fat and aids recovery without beating up your joints.'
+  },
+  {
+    day: 'THU', label: 'Legs Day', meta: '40 min · Quads, Hamstrings, Glutes', type: 'lift',
+    exercises: [
+      { name: 'Barbell Back Squat or Leg Press', sets: '3 sets × 8–10 reps', tip: 'Hit at least parallel depth' },
+      { name: 'Romanian Deadlift', sets: '3 sets × 10–12 reps', tip: "Feel the hamstring stretch, hinge don't squat" },
+      { name: 'Leg Extension', sets: '3 sets × 12–15 reps', tip: 'Squeeze at the top' },
+      { name: 'Leg Curl', sets: '3 sets × 12–15 reps', tip: 'Control the lowering phase' },
+      { name: 'Calf Raises (machine or standing)', sets: '3 sets × 15–20 reps', tip: 'Full stretch at bottom' },
+    ]
+  },
+  {
+    day: 'FRI', label: 'Push + Pull Combo', meta: '40–45 min · Full Upper Body', type: 'lift',
+    exercises: [
+      { name: 'Overhead Press (barbell or dumbbell)', sets: '3 sets × 8–10 reps', tip: "Core tight, don't arch lower back" },
+      { name: 'Chest-Supported Dumbbell Row', sets: '3 sets × 12 reps', tip: 'Keeps lower back out of it' },
+      { name: 'Cable Fly or Pec Deck', sets: '3 sets × 12–15 reps', tip: "Squeeze at centre, don't slam stack" },
+      { name: 'Lat Pulldown (wide grip)', sets: '3 sets × 10–12 reps', tip: 'Slightly lean back at bottom' },
+      { name: 'Tricep Dip or Skull Crusher', sets: '3 sets × 10–12 reps', tip: 'Control descent fully' },
+    ]
+  },
+  {
+    day: 'SAT', label: 'Zone 2 Cardio (Optional)', meta: '30 min · Easy', type: 'cardio',
+    cardio: "Same as Wednesday — 30 minutes at a pace where you can talk. This is genuinely optional. If you're wiped out, take the rest day instead. If you feel good, this extra session will accelerate fat loss meaningfully over 12 weeks. Even a 30-min incline walk works perfectly."
+  },
+  {
+    day: 'SUN', label: 'Rest & Recovery', meta: 'No training', type: 'rest',
+    rest: "Full rest. Get 7–8 hours sleep — this is when your muscles actually grow and fat metabolism works at its best. Do your weekly meal prep today so Monday starts with zero friction."
+  },
+];
+
+// ─── RENDER MEALS ────────────────────────────────────────────────────────────
+
+function renderMeals(data, containerId) {
+  const container = document.getElementById(containerId);
+  data.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'day-card';
+    card.innerHTML = `
+      <div class="day-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="day-name">${d.day}</div>
+        <div class="day-theme">${d.theme}</div>
+        <div class="day-cal">${d.cal}</div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        ${d.meals.map(m => `
+          <div class="meal-row">
+            <div class="meal-type">${m.type}</div>
+            <div class="meal-detail">
+              <div class="meal-name">${m.name}</div>
+              <div class="meal-macros">${m.macros}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+// ─── RENDER WORKOUTS ─────────────────────────────────────────────────────────
+
+function renderWorkouts() {
+  const container = document.getElementById('workoutGrid');
+  workoutDays.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'workout-card';
+    let bodyHTML = '';
+    if (d.type === 'lift') {
+      bodyHTML = `<div class="workout-body"><div class="exercise-list">
+        ${d.exercises.map((e, i) => `
+          <div class="exercise-item">
+            <div class="exercise-num">0${i+1}</div>
+            <div class="exercise-detail">
+              <div class="exercise-name">${e.name}</div>
+              <div class="exercise-sets">${e.sets}</div>
+              <div class="exercise-tip">${e.tip}</div>
+            </div>
+          </div>`).join('')}
+      </div></div>`;
+    } else if (d.type === 'cardio') {
+      bodyHTML = `<div class="workout-body"><div class="cardio-block"><strong>How to do it:</strong>${d.cardio}</div></div>`;
+    } else {
+      bodyHTML = `<div class="workout-body"><div class="rest-block">${d.rest}</div></div>`;
+    }
+    const badgeClass = d.type === 'lift' ? 'badge-lift' : d.type === 'cardio' ? 'badge-cardio' : 'badge-rest';
+    const badgeLabel = d.type === 'lift' ? 'Lift' : d.type === 'cardio' ? 'Cardio' : 'Rest';
+    card.innerHTML = `
+      <div class="workout-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="workout-day-badge">${d.day}</div>
+        <div class="workout-info">
+          <div class="workout-title">${d.label}</div>
+          <div class="workout-meta">${d.meta}</div>
+        </div>
+        <div class="workout-badge ${badgeClass}">${badgeLabel}</div>
+        <div class="chevron">▼</div>
+      </div>
+      ${bodyHTML}`;
+    container.appendChild(card);
+  });
+}
+
+// ─── WEIGHT TRACKER ──────────────────────────────────────────────────────────
+
+const STORAGE_KEY = 'fuelforge_weight_log';
+
+function loadEntries() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveEntries(entries) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+function logWeight() {
+  const dateVal = document.getElementById('logDate').value;
+  const weightVal = parseFloat(document.getElementById('logWeight').value);
+  const noteVal = document.getElementById('logNote').value.trim();
+
+  if (!dateVal || isNaN(weightVal) || weightVal <= 0) {
+    showToast('Please enter a valid date and weight');
+    return;
+  }
+
+  const entries = loadEntries();
+  // Prevent duplicate dates
+  const exists = entries.find(e => e.date === dateVal);
+  if (exists) {
+    exists.weight = weightVal;
+    exists.note = noteVal;
+    showToast('Entry updated');
+  } else {
+    entries.push({ date: dateVal, weight: weightVal, note: noteVal });
+    showToast('Weight logged!');
+  }
+
+  entries.sort((a, b) => a.date.localeCompare(b.date));
+  saveEntries(entries);
+  refreshTracker();
+
+  document.getElementById('logWeight').value = '';
+  document.getElementById('logNote').value = '';
+}
+
+function deleteEntry(date) {
+  const entries = loadEntries().filter(e => e.date !== date);
+  saveEntries(entries);
+  refreshTracker();
+  showToast('Entry removed');
+}
+
+function clearAll() {
+  if (!confirm('Clear all weight entries? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  refreshTracker();
+  showToast('Log cleared');
+}
+
+function refreshTracker() {
+  const entries = loadEntries();
+
+  // Summary
+  if (entries.length > 0) {
+    const start = entries[0].weight;
+    const current = entries[entries.length - 1].weight;
+    const lost = +(start - current).toFixed(1);
+    document.getElementById('sumStart').textContent = start + ' lbs';
+    document.getElementById('sumCurrent').textContent = current + ' lbs';
+    const lostEl = document.getElementById('sumLost');
+    lostEl.textContent = (lost > 0 ? '-' : lost < 0 ? '+' : '') + Math.abs(lost) + ' lbs';
+    lostEl.className = 'progress-val ' + (lost > 0 ? 'good' : lost < 0 ? 'change-pos' : 'neutral');
+  } else {
+    document.getElementById('sumStart').textContent = '—';
+    document.getElementById('sumCurrent').textContent = '—';
+    document.getElementById('sumLost').textContent = '—';
+    document.getElementById('sumLost').className = 'progress-val neutral';
+  }
+
+  // Chart
+  const canvas = document.getElementById('weightChart');
+  const empty = document.getElementById('emptyChart');
+  if (entries.length >= 2) {
+    empty.style.display = 'none';
+    canvas.style.display = 'block';
+    drawChart(entries);
+  } else {
+    empty.style.display = 'flex';
+    canvas.style.display = 'none';
+  }
+
+  // Table
+  const wrap = document.getElementById('logTableWrap');
+  if (entries.length === 0) {
+    wrap.innerHTML = '<div class="log-empty">No entries yet. Log your first weigh-in above.</div>';
+    return;
+  }
+
+  const reversed = [...entries].reverse();
+  let rows = reversed.map((e, idx) => {
+    const prev = reversed[idx + 1];
+    let changeHTML = '<span class="change-nil">—</span>';
+    if (prev) {
+      const diff = +(e.weight - prev.weight).toFixed(1);
+      if (diff < 0) changeHTML = `<span class="change-neg">${diff} lbs</span>`;
+      else if (diff > 0) changeHTML = `<span class="change-pos">+${diff} lbs</span>`;
+      else changeHTML = `<span class="change-nil">0 lbs</span>`;
+    }
+    const dateStr = new Date(e.date + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return `<tr>
+      <td>${dateStr}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:14px;">${e.weight} lbs</td>
+      <td>${changeHTML}</td>
+      <td style="color:var(--muted);font-size:12px;">${e.note || ''}</td>
+      <td><button class="delete-btn" onclick="deleteEntry('${e.date}')" title="Delete">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  wrap.innerHTML = `<table class="log-table">
+    <thead><tr>
+      <th>Date</th><th>Weight</th><th>Change</th><th>Note</th><th></th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+// ─── SIMPLE CANVAS CHART ─────────────────────────────────────────────────────
+
+function drawChart(entries) {
+  const canvas = document.getElementById('weightChart');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = 180 * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const W = rect.width;
+  const H = 180;
+  const pad = { top: 16, right: 16, bottom: 32, left: 44 };
+  const iW = W - pad.left - pad.right;
+  const iH = H - pad.top - pad.bottom;
+
+  const weights = entries.map(e => e.weight);
+  const minW = Math.min(...weights) - 2;
+  const maxW = Math.max(...weights) + 2;
+  const range = maxW - minW || 1;
+
+  const pts = entries.map((e, i) => ({
+    x: pad.left + (i / (entries.length - 1)) * iW,
+    y: pad.top + (1 - (e.weight - minW) / range) * iH,
+    weight: e.weight,
+    date: e.date
+  }));
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid lines
+  ctx.strokeStyle = '#2e2c28';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.top + (i / 4) * iH;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+    const val = (maxW - (i / 4) * range).toFixed(1);
+    ctx.fillStyle = '#7a7468';
+    ctx.font = '10px DM Mono, monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(val, pad.left - 6, y + 4);
+  }
+
+  // Fill gradient
+  const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + iH);
+  grad.addColorStop(0, 'rgba(212,82,26,0.18)');
+  grad.addColorStop(1, 'rgba(212,82,26,0)');
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  pts.forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.lineTo(pts[pts.length - 1].x, pad.top + iH);
+  ctx.lineTo(pts[0].x, pad.top + iH);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  pts.forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.strokeStyle = '#d4521a';
+  ctx.lineWidth = 2;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Dots
+  pts.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#d4521a';
+    ctx.fill();
+    ctx.strokeStyle = '#0e0e0e';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
+
+  // X labels — show first, last, and every ~3rd
+  ctx.fillStyle = '#7a7468';
+  ctx.font = '10px DM Mono, monospace';
+  ctx.textAlign = 'center';
+  pts.forEach((p, i) => {
+    if (i === 0 || i === pts.length - 1 || i % 3 === 0) {
+      const d = new Date(entries[i].date + 'T12:00:00');
+      const label = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+      ctx.fillText(label, p.x, H - 6);
+    }
+  });
+}
+
+// ─── UI HELPERS ──────────────────────────────────────────────────────────────
+
+function toggleCard(card) { card.classList.toggle('open'); }
+
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'tracker') { setTimeout(() => refreshTracker(), 50); }
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+
+// Set date input default to today
+document.getElementById('logDate').value = new Date().toISOString().split('T')[0];
+
+renderMeals(week1, 'week1');
+renderMeals(week2, 'week2');
+renderWorkouts();
+
+window.addEventListener('resize', () => {
+  const entries = loadEntries();
+  if (entries.length >= 2 && document.getElementById('tracker').classList.contains('active')) {
+    drawChart(entries);
+  }
+});
+</script>
+
+</body>
+</html>
